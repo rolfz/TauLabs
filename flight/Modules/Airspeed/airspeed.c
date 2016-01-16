@@ -51,6 +51,7 @@
 #include "attitudeactual.h"
 #include "positionactual.h"
 
+#include "baro_airspeed_ms4525.h"
 #include "baro_airspeed_etasv3.h"
 #include "baro_airspeed_analog.h"
 #include "pios_thread.h"
@@ -60,7 +61,7 @@
  #define GPS_AIRSPEED_PRESENT
 #endif
 
-#if defined (PIOS_INCLUDE_MPXV5004) || defined (PIOS_INCLUDE_MPXV7002) || defined (PIOS_INCLUDE_ETASV3)
+#if defined (PIOS_INCLUDE_MPXV5004) || defined (PIOS_INCLUDE_MPXV7002) || defined (PIOS_INCLUDE_ETASV3)|| defined (PIOS_INCLUDE_MS4525)
  #define BARO_AIRSPEED_PRESENT
 #endif
 
@@ -350,6 +351,10 @@ void baro_airspeedGet(BaroAirspeedData *baroAirspeedData, uint32_t *lastSysTime,
 		case AIRSPEEDSETTINGS_AIRSPEEDSENSORTYPE_EAGLETREEAIRSPEEDV3:
 			//Eagletree Airspeed v3
 			baro_airspeedGetETASV3(baroAirspeedData, lastSysTime, airspeedSensorType, airspeedADCPin);
+			break;
+		case AIRSPEEDSETTINGS_AIRSPEEDSENSORTYPE_DIYDRONESMS4525:
+			//I2C MS4525 sensor
+			baro_airspeedGetMS4525(baroAirspeedData, lastSysTime, airspeedSensorType, airspeedADCPin);
 			break;
 		default:
 			baroAirspeedData->BaroConnected = BAROAIRSPEED_BAROCONNECTED_FALSE;
